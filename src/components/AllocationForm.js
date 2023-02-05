@@ -3,6 +3,7 @@ import { AppContext } from '../context/AppContext';
 
 const AllocationForm = (props) => {
 	const { dispatch,remaining  } = useContext(AppContext);
+    const { currency } = useContext(AppContext);
 
 	const [name, setName] = useState('');
 	const [cost, setCost] = useState('');
@@ -58,7 +59,7 @@ const AllocationForm = (props) => {
 						<option defaultValue value="Add" name="Add">Add</option>
 	        	        <option value="Reduce" name="Reduce">Reduce</option>
 				  </select>
-                  <label style={{  marginLeft: '2rem'}}>£</label>
+                  <label style={{  marginLeft: '2rem'}}>{currency}</label>
                         <input
                             required='required'
                             type='number'

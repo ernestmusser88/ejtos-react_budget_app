@@ -5,11 +5,12 @@ import { AppContext } from '../context/AppContext';
 const Budget = (props) => {
 	const { budget } = useContext(AppContext);
     const { dispatch } = useContext(AppContext);
+    const { currency } = useContext(AppContext);
 
     return (
 		<div className='alert alert-secondary'>
 			<span>
-                Budget: 
+                Budget: {currency}
                 <input 
                     type="number"
                     step="10"
