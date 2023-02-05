@@ -30,41 +30,59 @@ export const AppReducer = (state, action) => {
 					...state
 				}
 			}
-			case 'RED_EXPENSE':
-				const red_expenses = state.expenses.map((currentExp)=> {
-					if (currentExp.name === action.payload.name && currentExp.cost - action.payload.cost >= 0) {
-						currentExp.cost =  currentExp.cost - action.payload.cost;
-						budget = state.budget + action.payload.cost
-					}
-					return currentExp
-				})
-				action.type = "DONE";
-				return {
-					...state,
-					expenses: [...red_expenses],
-				};
-			case 'DELETE_EXPENSE':
-			action.type = "DONE";
-			state.expenses.map((currentExp)=> {
-				if (currentExp.name === action.payload) {
-					budget = state.budget + currentExp.cost
-					currentExp.cost =  0;
+		case 'RED_EXPENSE':
+			const red_expenses = state.expenses.map((currentExp)=> {
+				if (currentExp.name === action.payload.name && currentExp.cost - action.payload.cost >= 0) {
+					currentExp.cost =  currentExp.cost - action.payload.cost;
+					budget = state.budget + action.payload.cost
 				}
 				return currentExp
 			})
 			action.type = "DONE";
 			return {
 				...state,
-				budget
+				expenses: [...red_expenses],
 			};
+		case 'DELETE_EXPENSE':
+		    action.type = "DONE";
+		    state.expenses.map((currentExp)=> {
+		    	if (currentExp.name === action.payload) {
+		    		budget = state.budget + currentExp.cost
+		    		currentExp.cost =  0;
+		    	}
+		    	return currentExp
+		    })
+		    action.type = "DONE";
+		    return {
+		    	...state,
+		    	budget
+		    };
 		case 'SET_BUDGET':
-			action.type = "DONE";
-			state.budget = action.payload;
 
+            const tempExp = state.expenses.reduce((total, item) => {
+                return (total = total + item.cost);
+            }, 0);
+
+            console.log(tempExp)
+
+            if(action.payload>20000){
+				alert('Budget cannot exceed £20,000');
+                action.payload=19999
+            }
+
+            //if(action.payload < tempExp){
+			//	alert("Budget cannot be lower than total spending");
+            //    action.payload=tempExp
+            //}
+
+            action.type = "DONE";
+			state.budget = action.payload;
 			return {
 				...state,
 			};
+
 		case 'CHG_CURRENCY':
+            console.log(action.payload)
 			action.type = "DONE";
 			state.currency = action.payload;
 			return {
@@ -86,7 +104,7 @@ const initialState = {
 		{ id: "Human Resource", name: 'Human Resource', cost: 40 },
 		{ id: "IT", name: 'IT', cost: 500 },
 	],
-	currency: '£'
+	currency: '£ Pound'
 };
 
 // 2. Creates the context this is the thing our components import and use to get the state
